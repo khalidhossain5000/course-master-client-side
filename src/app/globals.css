@@ -20,6 +20,7 @@ body {
   --font-montserrat: var(--font-montserrat);
   --font-poppins: var(--font-poppins);
  --color-accent: var(--accent);
+ --color-text-dark-primary: var(--text-dark-primary);
 }
 /* #fcfff2 */
 :root {
@@ -32,7 +33,7 @@ body {
 .dark {
   --background: #192335;
   --primary: #4a02d5;
-  --text-primary: #000000;
+  --text-dark-primary: #fcfff2;
   --accent:#71f9a3;
 }
 

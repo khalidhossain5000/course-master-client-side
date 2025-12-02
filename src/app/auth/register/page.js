@@ -6,18 +6,18 @@ import shapeii from "../../../assets/Auth/bg-shape/shape2.png";
 import shapeiii from "../../../assets/Auth/bg-shape/shape3.png";
 import shapeiv from "../../../assets/Auth/bg-shape/shape4.png";
 import shapev from "../../../assets/Auth/bg-shape/shape5.png";
-import loginImage from "../../../assets/Auth/account-img.png";
+import RegisterImage from "../../../assets/Auth/account-img.png";
 import Image from "next/image";
 import { ArrowUpRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
-const Login = () => {
+const Register = () => {
   return (
     <div className="">
       <div className="bg-[#f3f9ff] dark:bg-primary py-12 lg:py-20 xl:py-[120px]">
         <div className="relative container mx-auto">
           <h2 className="text-center text-text-primary text-2xl lg:text-3xl xl:text-5xl font-bold font-montserrat">
-            Sign In
+            Sign Up
           </h2>
 
           {/* Animated Shapes */}
@@ -78,20 +78,29 @@ const Login = () => {
           />
         </div>
       </div>
-      {/* login form and banner */}
+      {/* Register form and banner */}
       <div className="max-w-7xl mx-auto lg:flex items-center justify-center gap-12 py-22">
         <div className="bg-[#f3f9ff] flex-1 p-6  rounded-xl shadow-sm h-full">
           <div className="titles mb-12">
-            <h2 className="text-text-primary dark:text-text-dark-primary text-xl lg:text-2xl font-medium lg:font-bold mb-2   ">
-              Welcome Back!
+            <h2 className="text-text-primary dark:text-text-dark-primary text-xl lg:text-2xl font-medium lg:font-bold mb-2 lg:mb-5   ">
+              Let&apos;s Get Started!
             </h2>
-            <h5 className="text-text-primary dark:text-text-dark-primary text-sm lg:text-lg font-medium">
-              Sign in to your account and join us
+            <h5 className="text-gray-400 dark:text-text-dark-primary text-sm font-medium">
+             Please Enter Your Email Address to Start your Online Application
             </h5>
           </div>
           {/* form */}
          
             <form action="" className="space-y-5">
+                 {/* Name field */}
+            <div className="">
+              <p className="text-text-primary text-lg font-bold font-poppins mb-5">Enter Your Email Id</p>
+              <input
+                type="email"
+                className="w-full px-4 py-2 bg-white rounded-full border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                placeholder="Enter Your Email....."
+              />
+            </div>
             {/* Email */}
             <div className="">
               <p className="text-text-primary text-lg font-bold font-poppins mb-5">Enter Your Email Id</p>
@@ -124,7 +133,7 @@ const Login = () => {
             <div className="py-4">
                 <h2 className="text-gray-400 font-medium">Don&apos;t have an account? <Link href={`/auth/register`}><span className="text-primary font-bold ml-2">Sign Up</span></Link></h2>
             </div>
-            {/* login btn */}
+            {/* Register btn */}
             <button type="submit" className="group font-poppins text-lg text-text-primary hover:text-white bg-accent rounded-[30px]  px-5 py-3 whitespace-nowrap flex items-center gap-2 overflow-hidden relative transition-all duration-300 cursor-pointer">
               <span className="relative z-10 flex items-center gap-2 font-bold">
               Sign In
@@ -150,8 +159,8 @@ const Login = () => {
             }}
          >
              <Image
-            src={loginImage}
-            alt="login page image banner"
+            src={RegisterImage}
+            alt="Register page image banner"
             width={900}
             height={100}
             className="h-full"
@@ -163,4 +172,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
