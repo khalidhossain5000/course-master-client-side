@@ -20,9 +20,9 @@ const NavAuthItems = () => {
       </Link>
 
       {/* Register Button */}
-      <Link href={"/auth/login"}>
+      <Link href={"/auth/register"}>
         <button className="group font-poppins text-lg text-text-primary hover:text-white bg-accent rounded-[30px]  px-5 py-3 whitespace-nowrap flex items-center gap-2 overflow-hidden relative transition-all duration-300 cursor-pointer">
-          <span className="relative z-10 flex items-center gap-2">
+          <span className="relative z-10 flex items-center gap-2 font-bold">
             Register
             {/* Normal icon */}
             <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-45 group-hover:translate-x-1" />

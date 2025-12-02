@@ -9,7 +9,7 @@ const NavBar = () => {
       <nav className="container mx-auto flex items-center justify-between gap-6 py-4">
         <div className="logo">
           <Image
-            className=""
+            className="w-36 md:w-44 lg:w-full"
             src={lightLogo}
             alt="CourseMaster logo"
             width={250}
@@ -22,7 +22,7 @@ const NavBar = () => {
           <NavItem />
         </div>
         {/* auth buttons and profile component*/}
-        <div>
+        <div className="hidden lg:block">
           <NavAuthItems />
         </div>
       </nav>
