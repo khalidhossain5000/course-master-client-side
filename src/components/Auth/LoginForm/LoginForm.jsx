@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import shapei from "../../../assets/Auth/bg-shape/shape1.png";
 import shapeii from "../../../assets/Auth/bg-shape/shape2.png";
@@ -10,8 +10,31 @@ import loginImage from "../../../assets/Auth/account-img.png";
 import Image from "next/image";
 import { ArrowUpRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import useAxios from "@/hooks/AxiosApiCallHooks/useAxios";
 
 const LoginForm = () => {
+    const axiosInstance=useAxios()
+    const [error,setError]=useState()
+    const handleLogin = (e)=>{
+        e.preventDefault();
+        const form=e.target;
+        const email=form.email.value
+        const password=form.password.value
+axiosInstance
+      .post("/api/auth/login", {email,password})
+      .then((res) => {
+        alert("User Logged In successfully");
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.response.data.message);
+        alert("Failed to Login user");
+      })
+
+    }
+
+    console.log(error,'this is error');
   return (
     <div className="">
       <div className="bg-[#f3f9ff] dark:bg-primary py-12 lg:py-20 xl:py-[120px]">
@@ -91,12 +114,13 @@ const LoginForm = () => {
           </div>
           {/* form */}
          
-            <form action="" className="space-y-5">
+            <form onSubmit={handleLogin} className="space-y-5">
             {/* Email */}
             <div className="">
               <p className="text-text-primary text-lg font-bold font-poppins mb-5">Enter Your Email Id</p>
               <input
                 type="email"
+                name="email"
                 className="w-full px-4 py-2 bg-white rounded-full border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                 placeholder="Enter Your Email....."
               />
@@ -110,7 +134,8 @@ const LoginForm = () => {
 
               <div className="relative">
                 <input
-                type="email"
+                type="text"
+                name="password"
                   className="w-full px-4 py-2 bg-white rounded-full border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="Enter password"
                 />
@@ -119,6 +144,12 @@ const LoginForm = () => {
                   <EyeOff size={20} />
                 </span>
               </div>
+            </div>
+            {/* eorror */}
+            <div>
+                {
+                    error && <p className="text-red-600 font-medium">{error}</p>
+                }
             </div>
             {/* signup */}
             <div className="py-4">

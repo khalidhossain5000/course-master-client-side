@@ -13,38 +13,34 @@ import Link from "next/link";
 import useAxios from "@/hooks/AxiosApiCallHooks/useAxios";
 
 const RegisterForm = () => {
-    const axiosInstance=useAxios()
-    const [error,setError]=useState('')
+  const axiosInstance = useAxios();
+  const [error, setError] = useState("");
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    const userData ={
-        name,
-        email,
-        password
-    }
-
-
-
-   
+    const userData = {
+      name,
+      email,
+      password,
+    };
 
     //api call
-    axiosInstance.post('/api/auth/register',userData)
-    .then((res)=>{
-        alert('User registered successfully')
-        console.log(res.data)
-    })
-    .catch((error)=>{
+    axiosInstance
+      .post("/api/auth/register", userData)
+      .then((res) => {
+        alert("User registered successfully");
+        console.log(res.data);
+      })
+      .catch((error) => {
         
-        setError(error.response.data.errors[0])
-        alert('Failed to register user')
-    })
-
+        setError(error.response.data.errors[0]);
+        alert("Failed to register user");
+      })
   };
-  console.log(error,'error this is here h');
+  console.log(error, "error this is here h");
   return (
     <div className="">
       <div className="bg-[#f3f9ff] dark:bg-primary py-12 lg:py-20 xl:py-[120px]">
@@ -171,16 +167,14 @@ const RegisterForm = () => {
             </div>
             {/* error block here */}
             <div>
-                {
-                    error && <p className="text-red-500 font-medium">{error}</p>
-                }
+              {error && <p className="text-red-500 font-medium">{error}</p>}
             </div>
             {/* signup */}
             <div className="py-4">
               <h2 className="text-gray-400 font-medium">
                 Already have an account?{" "}
                 <Link href={`/auth/login`}>
-                  <span className="text-primary font-bold ml-2">Sign Up</span>
+                  <span className="text-primary font-bold ml-2">Sign In</span>
                 </Link>
               </h2>
             </div>
