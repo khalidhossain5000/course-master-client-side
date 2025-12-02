@@ -1,23 +1,22 @@
-'use client'
-import { useTheme } from 'next-themes';
-import React from 'react';
+"use client";
+import { useTheme } from "next-themes";
+import React from "react";
 import { motion } from "framer-motion";
-import { Moon, Sun } from 'lucide-react';
-import { Button } from '../../button';
+import { Moon, Sun } from "lucide-react";
+import { Button } from "../../button";
 
 const ModeToggle = () => {
-    const { setTheme,theme, systemTheme, resolvedTheme } = useTheme()
-      const isDark = resolvedTheme === "dark";
+  const { setTheme, theme, systemTheme, resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
 
-    console.log(setTheme,theme, systemTheme, resolvedTheme);
-    return (
-        <Button
+  console.log(setTheme, theme, systemTheme, resolvedTheme);
+  return (
+    <Button
       variant="ghost"
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="relative w-12 h-12 rounded-full"
     >
-      {/* Background Animation */}
       <motion.div
         key={isDark ? "dark" : "light"}
         initial={{ scale: 0, opacity: 0 }}
@@ -28,7 +27,6 @@ const ModeToggle = () => {
         }`}
       />
 
-      {/* Icon Animation */}
       <motion.div
         key={isDark ? "moon" : "sun"}
         initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
@@ -44,7 +42,7 @@ const ModeToggle = () => {
         )}
       </motion.div>
     </Button>
-    );
+  );
 };
 
 export default ModeToggle;
