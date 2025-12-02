@@ -3,7 +3,7 @@ import { useTheme } from "next-themes";
 import React from "react";
 import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
-import { Button } from "../../button";
+import { Button } from "../../ui/button";
 
 const ModeToggle = () => {
   const { setTheme, resolvedTheme } = useTheme();
