@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import shapei from "../../../assets/Auth/bg-shape/shape1.png";
 import shapeii from "../../../assets/Auth/bg-shape/shape2.png";
@@ -14,6 +14,7 @@ import useAxios from "@/hooks/AxiosApiCallHooks/useAxios";
 
 const RegisterForm = () => {
     const axiosInstance=useAxios()
+    const [error,setError]=useState('')
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -28,7 +29,7 @@ const RegisterForm = () => {
 
 
 
-    console.log(name,email,password,'register btn clicked here');
+   
 
     //api call
     axiosInstance.post('/api/auth/register',userData)
@@ -37,11 +38,13 @@ const RegisterForm = () => {
         console.log(res.data)
     })
     .catch((error)=>{
-        console.error('Error registering user:', error);
+        
+        setError(error.response.data.errors[0])
         alert('Failed to register user')
     })
 
   };
+  console.log(error,'error this is here h');
   return (
     <div className="">
       <div className="bg-[#f3f9ff] dark:bg-primary py-12 lg:py-20 xl:py-[120px]">
@@ -165,6 +168,12 @@ const RegisterForm = () => {
                   <EyeOff size={20} />
                 </span>
               </div>
+            </div>
+            {/* error block here */}
+            <div>
+                {
+                    error && <p className="text-red-500 font-medium">{error}</p>
+                }
             </div>
             {/* signup */}
             <div className="py-4">
