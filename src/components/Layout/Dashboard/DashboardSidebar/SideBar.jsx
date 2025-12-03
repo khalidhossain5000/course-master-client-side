@@ -1,18 +1,20 @@
 "use client";
 import useAuth from "@/hooks/AuthHooks/useAuth";
 import { BookOpen, House, School } from "lucide-react";
-
+// import lightLogo from "../../../../assets/logo/logo.png";
+// import darkLogo from "../../../../assets/logo/dark-logo.png";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { MdOutlineDonutSmall } from "react-icons/md";
+import Image from "next/image";
 
 const SideBar = () => {
   const pathname = usePathname();
-  const {user,}=useAuth()
+  const { user } = useAuth();
   let sidebarRoutes = [];
-  // const role = user?.role;
-  
+  //   const role = user?.role;
+
   const role = "admin"; // just for testing
   if (role === "admin") {
     sidebarRoutes = [
@@ -22,29 +24,29 @@ const SideBar = () => {
         icon: <House className="w-5 h-5" />,
       },
       {
-        name: "Manage Users",
-        path: "/dashboard/admin/manage-users",
-        icon: <BookOpen className="w-5 h-5" />,
-      },
-      {
         name: "Add Course",
         path: "/dashboard/admin/add-courses",
         icon: <School className="w-5 h-5" />,
       },
       {
+        name: "Manage Users",
+        path: "/dashboard/admin/manage-users",
+        icon: <BookOpen className="w-5 h-5" />,
+      },
+      {
         name: "All Course",
         path: "/dashboard/admin/all-courses",
-        icon: <MdOutlineDonutSmall  className="w-5 h-5" />,
-      }, 
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
+      },
       {
         name: "Free Enrolled Course",
         path: "/dashboard/admin/free-enrolled",
-        icon: <MdOutlineDonutSmall  className="w-5 h-5" />,
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
       },
       {
         name: "Premium Enrolled Course",
         path: "/dashboard/admin/premium-enroll-info",
-        icon: <MdOutlineDonutSmall  className="w-5 h-5" />,
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
       },
     ];
   }
@@ -70,8 +72,26 @@ const SideBar = () => {
   }
 
   return (
-    <div className="" >
-      <div className="bg-[#f5f7f9] dark:bg-[#192335] flex flex-col gap-4 rounded-xl p-2 ">
+    <div className="bg-[#e1e2f6] dark:bg-[#192335] rounded-lg p-3 shadow-lg">
+      {/* <div className="pb-6">
+        <Image
+          className="w-36 md:w-44 lg:w-full dark:hidden"
+          src={lightLogo}
+          alt="CourseMaster logo"
+          width={250}
+          height={150}
+          priority
+        />
+        <Image
+          className="w-36 md:w-44 lg:w-full hidden dark:block"
+          src={darkLogo}
+          alt="CourseMaster logo"
+          width={250}
+          height={150}
+          priority
+        />
+      </div> */}
+      <div className=" flex flex-col gap-4  p-2 ">
         {sidebarRoutes.map((route, idx) => {
           const isActive = pathname === route.path;
           return (
@@ -95,13 +115,3 @@ const SideBar = () => {
 };
 
 export default SideBar;
-
-
-
-
-
-
-
-
-
-
