@@ -4,12 +4,15 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import useAuth from "@/hooks/AuthHooks/useAuth";
+import ModeToggle from "../../ModeToggle/ModeToggle";
 
 const NavAuthItems = () => {
   const { user,logout } = useAuth();
   console.log(user, "user in the nav item here");
   return (
-    <div>
+    <div className="flex items-center gap-6">
+      <ModeToggle/>
+      <div>
       {user ? (
         <div className="flex items-center gap-3">
           <Image
@@ -61,6 +64,7 @@ const NavAuthItems = () => {
           </Link>
         </div>
       )}
+      </div>
     </div>
   );
 };

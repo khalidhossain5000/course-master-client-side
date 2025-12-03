@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import BurgerMenu from "../../HamburgerMenu/BurgerMenu";
+import ModeToggle from "../../ModeToggle/ModeToggle";
 
 const NavItem = () => {
   const routes = [
@@ -38,7 +39,8 @@ const NavItem = () => {
       </ul>
      </div>
 
-      <div className="lg:hidden">
+      <div className="lg:hidden flex items-center gap-6">
+        <ModeToggle/>
        <BurgerMenu menuItems={routes}/>
       </div>
     </div>
