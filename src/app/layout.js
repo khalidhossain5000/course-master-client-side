@@ -1,7 +1,7 @@
 import { Montserrat, Poppins  } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import { ThemeProvider } from "@/Providers/ThemeProvider";
+import ThemeProvider from "@/Providers/ThemeProvider";
 
 const montserrat = Montserrat({
   subsets: ["latin"],

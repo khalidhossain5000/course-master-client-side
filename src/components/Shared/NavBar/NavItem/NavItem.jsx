@@ -16,6 +16,7 @@ const NavItem = () => {
     { name: "My Wishlist", path: "/wishlist" },
   ];
   const pathName = usePathname();
+
   return (
     <div>
      <div className="hidden lg:block">

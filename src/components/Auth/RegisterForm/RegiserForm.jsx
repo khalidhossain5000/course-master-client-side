@@ -11,10 +11,12 @@ import Image from "next/image";
 import { ArrowUpRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import useAxios from "@/hooks/AxiosApiCallHooks/useAxios";
+import useAuth from "@/hooks/AuthHooks/useAuth";
 
 const RegisterForm = () => {
   const axiosInstance = useAxios();
   const [error, setError] = useState("");
+  const { setToken, setUser } = useAuth();
   const handleRegister = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -33,12 +35,13 @@ const RegisterForm = () => {
       .then((res) => {
         alert("User registered successfully");
         console.log(res.data);
+           setToken(res.data.accessToken);
+    setUser(res.data.user);
       })
       .catch((error) => {
-        
         setError(error.response.data.errors[0]);
         alert("Failed to register user");
-      })
+      });
   };
   console.log(error, "error this is here h");
   return (

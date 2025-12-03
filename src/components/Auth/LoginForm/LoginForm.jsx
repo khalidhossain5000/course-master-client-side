@@ -11,30 +11,34 @@ import Image from "next/image";
 import { ArrowUpRight, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import useAxios from "@/hooks/AxiosApiCallHooks/useAxios";
+import useAuth from "@/hooks/AuthHooks/useAuth";
+
 
 const LoginForm = () => {
-    const axiosInstance=useAxios()
-    const [error,setError]=useState()
-    const handleLogin = (e)=>{
-        e.preventDefault();
-        const form=e.target;
-        const email=form.email.value
-        const password=form.password.value
-axiosInstance
-      .post("/api/auth/login", {email,password})
+  const axiosInstance = useAxios();
+  const [error, setError] = useState();
+  const { setUser, setToken } = useAuth();
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    axiosInstance
+      .post("/api/auth/login", { email, password })
       .then((res) => {
         alert("User Logged In successfully");
         console.log(res.data);
+            setToken(res.data.accessToken);
+    setUser(res.data.user);
       })
       .catch((error) => {
         console.log(error);
         setError(error.response.data.message);
         alert("Failed to Login user");
-      })
+      });
+  };
 
-    }
-
-    console.log(error,'this is error');
+  console.log(error, "this is error");
   return (
     <div className="">
       <div className="bg-[#f3f9ff] dark:bg-primary py-12 lg:py-20 xl:py-[120px]">
@@ -113,11 +117,13 @@ axiosInstance
             </h5>
           </div>
           {/* form */}
-         
-            <form onSubmit={handleLogin} className="space-y-5">
+
+          <form onSubmit={handleLogin} className="space-y-5">
             {/* Email */}
             <div className="">
-              <p className="text-text-primary text-lg font-bold font-poppins mb-5">Enter Your Email Id</p>
+              <p className="text-text-primary text-lg font-bold font-poppins mb-5">
+                Enter Your Email Id
+              </p>
               <input
                 type="email"
                 name="email"
@@ -134,8 +140,8 @@ axiosInstance
 
               <div className="relative">
                 <input
-                type="text"
-                name="password"
+                  type="text"
+                  name="password"
                   className="w-full px-4 py-2 bg-white rounded-full border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
                   placeholder="Enter password"
                 />
@@ -147,18 +153,24 @@ axiosInstance
             </div>
             {/* eorror */}
             <div>
-                {
-                    error && <p className="text-red-600 font-medium">{error}</p>
-                }
+              {error && <p className="text-red-600 font-medium">{error}</p>}
             </div>
             {/* signup */}
             <div className="py-4">
-                <h2 className="text-gray-400 font-medium">Don&apos;t have an account? <Link href={`/auth/register`}><span className="text-primary font-bold ml-2">Sign Up</span></Link></h2>
+              <h2 className="text-gray-400 font-medium">
+                Don&apos;t have an account?{" "}
+                <Link href={`/auth/register`}>
+                  <span className="text-primary font-bold ml-2">Sign Up</span>
+                </Link>
+              </h2>
             </div>
             {/* login btn */}
-            <button type="submit" className="group font-poppins text-lg text-text-primary hover:text-white bg-accent rounded-[30px]  px-5 py-3 whitespace-nowrap flex items-center gap-2 overflow-hidden relative transition-all duration-300 cursor-pointer">
+            <button
+              type="submit"
+              className="group font-poppins text-lg text-text-primary hover:text-white bg-accent rounded-[30px]  px-5 py-3 whitespace-nowrap flex items-center gap-2 overflow-hidden relative transition-all duration-300 cursor-pointer"
+            >
               <span className="relative z-10 flex items-center gap-2 font-bold">
-              Sign In
+                Sign In
                 {/* Normal icon */}
                 <ArrowUpRight className="w-5 h-5 transition-transform duration-300 group-hover:rotate-45 group-hover:translate-x-1" />
               </span>
@@ -166,28 +178,27 @@ axiosInstance
               {/* Background overlay */}
               <span className="absolute inset-0 bg-primary rounded-[30px] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 ease-out"></span>
             </button>
-            </form>
-        
+          </form>
         </div>
         {/* image  */}
         <div className="hidden lg:block flex-1 relative">
-         <motion.div
-         animate={{ y: [0,100,0] ,x:[0,-55,0]} }
-         transition={{
+          <motion.div
+            animate={{ y: [0, 100, 0], x: [0, -55, 0] }}
+            transition={{
               duration: 5,
               repeat: Infinity,
               repeatType: "loop",
               ease: "easeInOut",
             }}
-         >
-             <Image
-            src={loginImage}
-            alt="login page image banner"
-            width={900}
-            height={100}
-            className="h-full"
-          />
-         </motion.div>
+          >
+            <Image
+              src={loginImage}
+              alt="login page image banner"
+              width={900}
+              height={100}
+              className="h-full"
+            />
+          </motion.div>
         </div>
       </div>
     </div>

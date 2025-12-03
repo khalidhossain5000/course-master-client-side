@@ -1,9 +1,10 @@
 import React from "react";
-import lightLogo from "../../../../../assets/logo/logo.png";
+import lightLogo from "../../../../assets/logo/logo.png";
 import Image from "next/image";
 import NavItem from "../NavItem/NavItem";
 import NavAuthItems from "../NavAuthItems/NavAuthItems";
 const NavBar = () => {
+  
   return (
     <div className="bg-background sticky top-0 z-50 shadow-sm">
       <nav className="container mx-auto flex items-center justify-between gap-6 py-4">
