@@ -437,7 +437,7 @@ const CourseForm = ({ instructors }) => {
               className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#4a02d5] to-[#71f9a3]
                        text-white font-semibold hover:opacity-90 
                        transform hover:-translate-y-0.5 transition-all duration-200 
-                       shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#4a02d5] focus:ring-offset-2"
+                       shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#4a02d5] focus:ring-offset-2 cursor-pointer"
             >
               <div className="flex items-center justify-center gap-2">
                 <LuCheck className="w-5 h-5" />

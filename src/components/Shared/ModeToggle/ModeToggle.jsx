@@ -14,7 +14,7 @@ const ModeToggle = () => {
       variant="ghost"
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="relative w-12 h-12 rounded-full"
+      className="relative w-12 h-12 rounded-full cursor-pointer"
     >
       <motion.div
         key={isDark ? "dark" : "light"}

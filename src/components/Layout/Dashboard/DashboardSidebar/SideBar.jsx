@@ -29,6 +29,16 @@ const SideBar = () => {
         icon: <School className="w-5 h-5" />,
       },
       {
+        name: "Add Instructor",
+        path: "/dashboard/admin/add-instructors",
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
+      },
+      {
+        name: "Add Assignment",
+        path: "/dashboard/admin/all-courses",
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
+      },
+      {
         name: "Manage Users",
         path: "/dashboard/admin/manage-users",
         icon: <BookOpen className="w-5 h-5" />,

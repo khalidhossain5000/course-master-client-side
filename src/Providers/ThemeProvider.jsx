@@ -1,47 +1,17 @@
-
-
-// import React from "react";
-// import { ThemeProvider as NextThemesProvider } from "next-themes";
-// import AuthProvider from "@/context/AuthProvider";
-
-
-
-// export function ThemeProvider(props) {
-//   return (
-//     <NextThemesProvider {...props}>
-//       {/* <TanstackProvider></TanstackProvider> */}
-//       <AuthProvider>
-//         {props.children}
-//       </AuthProvider>
-//     </NextThemesProvider>
-//   );
-// }
-
-
-
-
-
-
 "use client";
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import AuthProvider from "@/context/AuthProvider";
+import TanstackProvider from "./TanstackProvider";
 
 const ThemeProvider = ({ children, ...props }) => {
   return (
     <NextThemesProvider {...props}>
-      <AuthProvider>
-        {children}
-      </AuthProvider>
+      <TanstackProvider>
+        <AuthProvider>{children}</AuthProvider>
+      </TanstackProvider>
     </NextThemesProvider>
   );
 };
 
 export default ThemeProvider;
-
-
-
-
-
-
-
