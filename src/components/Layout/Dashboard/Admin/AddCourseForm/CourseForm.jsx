@@ -15,8 +15,10 @@ import {
   LuChevronDown,
 } from "react-icons/lu";
 import { FiUpload } from "react-icons/fi";
+import useAxiosSecure from "@/hooks/AxiosSecureHooks/useAxiosSecure";
 
 const CourseForm = ({ instructors }) => {
+  const axiosSecure=useAxiosSecure()
   const {
     register,
     handleSubmit,
@@ -56,6 +58,15 @@ const CourseForm = ({ instructors }) => {
 
   const onSubmit = (data) => {
     console.log("FORM SUBMITTED:", data);
+    axiosSecure.post('/api/courses/create',data)
+    .then((res)=>{
+      console.log(res,'this is res');
+      alert("course created")
+    })
+    .catch((error)=>{
+      console.log(error)
+      alert('course error occured')
+    })
   };
 
   return (

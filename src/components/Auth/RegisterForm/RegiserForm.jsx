@@ -38,8 +38,9 @@ const RegisterForm = () => {
            setToken(res.data.accessToken);
     setUser(res.data.user);
       })
-      .catch((error) => {
-        setError(error.response.data.errors[0]);
+      .catch((err) => {
+        console.log(err);
+        setError(err.response.data.errors[0]);
         alert("Failed to register user");
       });
   };
