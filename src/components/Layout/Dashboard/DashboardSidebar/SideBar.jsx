@@ -34,7 +34,17 @@ const SideBar = () => {
         icon: <MdOutlineDonutSmall className="w-5 h-5" />,
       },
       {
-        name: "Add Assignment",
+        name: "Add Assignment ",
+        path: "/dashboard/admin/add-assignment",
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
+      },
+      {
+        name: "Add Quiz ",
+        path: "/dashboard/admin/add-quiz",
+        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
+      },
+      {
+        name: "All Courses",
         path: "/dashboard/admin/all-courses",
         icon: <MdOutlineDonutSmall className="w-5 h-5" />,
       },
@@ -43,11 +53,7 @@ const SideBar = () => {
         path: "/dashboard/admin/manage-users",
         icon: <BookOpen className="w-5 h-5" />,
       },
-      {
-        name: "All Course",
-        path: "/dashboard/admin/all-courses",
-        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
-      },
+      
       {
         name: "Free Enrolled Course",
         path: "/dashboard/admin/free-enrolled",

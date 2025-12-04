@@ -16,6 +16,7 @@ import {
 } from "react-icons/lu";
 import { FiUpload } from "react-icons/fi";
 import useAxiosSecure from "@/hooks/AxiosSecureHooks/useAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const CourseForm = ({ instructors }) => {
   const axiosSecure=useAxiosSecure()
@@ -68,6 +69,19 @@ const CourseForm = ({ instructors }) => {
       alert('course error occured')
     })
   };
+
+
+  //fetching instrucotrs data
+   const { data: allInstructors = [], isLoading } = useQuery({
+    queryKey: ["allInstructors"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/api/instructors");
+      return res.data.data;
+    },
+  });
+
+  if(isLoading) return <p>instrucotrs loadinggggggggg........</p>
+
 
   return (
     <div className="min-h-screen bg-[#fcfff2] dark:bg-[#192335] py-8 px-4">
@@ -205,7 +219,7 @@ const CourseForm = ({ instructors }) => {
                                appearance-none cursor-pointer transition-all duration-200"
                     >
                       <option value="">Select Instructor</option>
-                      {instructors?.map((ins) => (
+                      {allInstructors?.map((ins) => (
                         <option key={ins._id} value={ins._id}>
                           {ins.name}
 
