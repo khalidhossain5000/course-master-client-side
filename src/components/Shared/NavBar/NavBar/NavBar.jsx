@@ -8,7 +8,7 @@ const NavBar = () => {
 
   return (
     <div className="bg-background sticky top-0 z-50 shadow-sm">
-      <nav className="container mx-auto flex items-center justify-between gap-6 py-4">
+      <nav className="lxl:max-w-7xl 2xl:container mx-auto flex items-center justify-between gap-6 py-4">
         <div className="logo">
           <Image
             className="w-36 md:w-44 lg:w-full dark:hidden"

@@ -1,42 +1,65 @@
-/* eslint-disable react-hooks/incompatible-library */
 "use client";
+import React, { useEffect } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import ImageUpload from "@/components/Shared/HandleImageUpload/ImageUploader";
 import {
-  LuPlus,
-  LuTrash2,
-  LuVideo,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import {
   LuBookOpen,
-  LuUser,
-  LuDollarSign,
   LuTag,
-  LuCheck,
-  LuCalendar,
   LuChevronDown,
+  LuCalendar,
+  LuVideo,
+  LuTrash2,
+  LuPlus,
+  LuDollarSign,
+  LuUser,
+  LuCheck,
 } from "react-icons/lu";
-import { FiUpload } from "react-icons/fi";
+import Swal from "sweetalert2";
 import useAxiosSecure from "@/hooks/AxiosSecureHooks/useAxiosSecure";
+import ImageUpload from "@/components/Shared/HandleImageUpload/ImageUploader";
 import { useQuery } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
-const CourseForm = ({ instructors }) => {
-  const axiosSecure=useAxiosSecure()
+
+const UpdateModal = ({ course, onClose, categories }) => {
+  const axiosSecure = useAxiosSecure();
+
+  //fetching instrucotrs data
+   const { data: allInstructors = [], isLoading,refetch } = useQuery({
+    queryKey: ["allInstructors"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/api/instructors");
+      return res.data.data;
+    },
+  });
+
+  
+
   const {
     register,
-    handleSubmit,
     control,
-    watch,
+    handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: "",
-      description: "",
-      isFree: false,
-      price: "",
-      instructor: "",
-      category: "",
-      batchName: "",
-      lessons: [{ title: "", videoUrl: "" }],
+      title: course.title,
+      description: course.description,
+      category: course.category,
+      batchName: course.batchName,
+      thumbnail: course.thumbnail,
+      instructor: course.instructor,
+      isFree: course.isFree,
+      price: course.price,
+      lessons: course.lessons || [],
     },
   });
 
@@ -47,48 +70,33 @@ const CourseForm = ({ instructors }) => {
 
   const isFree = watch("isFree");
 
-  // Categories for dropdown
-  const categories = [
-    "Web Development",
-    "Mobile Development",
-    "Data Science",
-    "Machine Learning",
-    "UI/UX Design",
-    "Digital Marketing",
-  ];
-
-  const onSubmit = (data) => {
-    console.log("FORM SUBMITTED:", data);
-    axiosSecure.post('/api/courses/create',data)
-    .then((res)=>{
-      console.log(res,'this is res');
-      alert("course created")
-    })
-    .catch((error)=>{
-      console.log(error)
-      alert('course error occured')
-    })
+if(isLoading) return <p>instrucotrs loadinggggggggg........</p>
+  const onSubmit = async (data) => {
+    console.log(data,'updated data this is here');
+    try {
+      const res = await axiosSecure.put(`/api/courses/update/${course._id}`, data);
+      if (res.data.success) {
+        Swal.fire("Success", "Course updated successfully", "success");
+        onClose();
+        refetch()
+      }
+      refetch()
+    } catch (err) {
+      console.error(err);
+      refetch()
+      toast.error(`error in wh df df ${err}`)
+    }
   };
 
-
-  //fetching instrucotrs data
-   const { data: allInstructors = [], isLoading } = useQuery({
-    queryKey: ["allInstructors"],
-    queryFn: async () => {
-      const res = await axiosSecure.get("/api/instructors");
-      return res.data.data;
-    },
-  });
-
-  if(isLoading) return <p>instrucotrs loadinggggggggg........</p>
-
-
   return (
-    <div className="min-h-screen bg-[#fcfff2] dark:bg-[#192335] py-8 px-4">
-      <div className="max-w-4xl mx-auto">
-        
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          {/* Card 1: Course Details */}
+    <Dialog open={true} onOpenChange={onClose}>
+      <DialogContent className="sm:max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Update Course</DialogTitle>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 mt-2">
+          {/* Course Details */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 rounded-lg bg-[#4a02d5]/10 dark:bg-[#4a02d5]/20">
@@ -129,7 +137,7 @@ const CourseForm = ({ instructors }) => {
                   )}
                 </div>
 
-                {/* CATEGORY DROPDOWN */}
+                {/* CATEGORY */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Category *
@@ -147,7 +155,7 @@ const CourseForm = ({ instructors }) => {
                                appearance-none cursor-pointer transition-all duration-200"
                     >
                       <option value="">Select a category</option>
-                      {categories.map((cat) => (
+                      {categories?.map((cat) => (
                         <option key={cat} value={cat}>
                           {cat}
                         </option>
@@ -201,7 +209,7 @@ const CourseForm = ({ instructors }) => {
                   </div>
                 </div>
 
-                {/* INSTRUCTOR DROPDOWN */}
+                {/* INSTRUCTOR */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Instructor *
@@ -222,11 +230,8 @@ const CourseForm = ({ instructors }) => {
                       {allInstructors?.map((ins) => (
                         <option key={ins._id} value={ins._id}>
                           {ins.name}
-
                         </option>
-
                       ))}
-                      <option value="hh">heloh</option>
                     </select>
                     <LuUser className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
@@ -275,12 +280,8 @@ const CourseForm = ({ instructors }) => {
                       <div className="relative">
                         <input
                           {...register("price", {
-                            required:
-                              !isFree && "Price is required for paid courses",
-                            min: {
-                              value: 0,
-                              message: "Price must be positive",
-                            },
+                            required: !isFree && "Price is required for paid courses",
+                            min: { value: 0, message: "Price must be positive" },
                           })}
                           type="number"
                           className="w-full px-4 py-3 pl-11 rounded-xl border border-gray-300 dark:border-gray-600 
@@ -294,9 +295,7 @@ const CourseForm = ({ instructors }) => {
                         <LuDollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                       </div>
                       {errors.price && (
-                        <p className="mt-1 text-sm text-red-500">
-                          {errors.price.message}
-                        </p>
+                        <p className="mt-1 text-sm text-red-500">{errors.price.message}</p>
                       )}
                     </div>
                   )}
@@ -304,15 +303,13 @@ const CourseForm = ({ instructors }) => {
               </div>
             </div>
 
-            {/* DESCRIPTION - Full Width */}
+            {/* DESCRIPTION */}
             <div className="mt-6">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Description *
               </label>
               <textarea
-                {...register("description", {
-                  required: "Description is required",
-                })}
+                {...register("description", { required: "Description is required" })}
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 
                          bg-white dark:bg-gray-700 
                          text-[#192335] dark:text-[#fcfff2]
@@ -323,14 +320,12 @@ const CourseForm = ({ instructors }) => {
                 placeholder="Describe what students will learn in this course..."
               ></textarea>
               {errors.description && (
-                <p className="mt-1 text-sm text-red-500">
-                  {errors.description.message}
-                </p>
+                <p className="mt-1 text-sm text-red-500">{errors.description.message}</p>
               )}
             </div>
           </div>
 
-          {/* Card 2: Lessons */}
+          {/* Lessons */}
           <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 md:p-8">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
@@ -367,12 +362,9 @@ const CourseForm = ({ instructors }) => {
                             Lesson Title *
                           </label>
                           <input
-                            {...register(`lessons.${index}.title`, {
-                              required: "Lesson title is required",
-                            })}
+                            {...register(`lessons.${index}.title`, { required: "Lesson title is required" })}
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
-                                     bg-white dark:bg-gray-700 
-                                     text-[#192335] dark:text-[#fcfff2]
+                                     bg-white dark:bg-gray-700 text-[#192335] dark:text-[#fcfff2]
                                      focus:outline-none focus:border-[#4a02d5] focus:shadow-[0_0_0_3px_rgba(74,2,213,0.1)]
                                      dark:focus:border-[#71f9a3] dark:focus:shadow-[0_0_0_3px_rgba(113,249,163,0.2)]
                                      transition-all duration-200"
@@ -384,12 +376,9 @@ const CourseForm = ({ instructors }) => {
                             Video URL *
                           </label>
                           <input
-                            {...register(`lessons.${index}.videoUrl`, {
-                              required: "Video URL is required",
-                            })}
+                            {...register(`lessons.${index}.videoUrl`, { required: "Video URL is required" })}
                             className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 
-                                     bg-white dark:bg-gray-700 
-                                     text-[#192335] dark:text-[#fcfff2]
+                                     bg-white dark:bg-gray-700 text-[#192335] dark:text-[#fcfff2]
                                      focus:outline-none focus:border-[#4a02d5] focus:shadow-[0_0_0_3px_rgba(74,2,213,0.1)]
                                      dark:focus:border-[#71f9a3] dark:focus:shadow-[0_0_0_3px_rgba(113,249,163,0.2)]
                                      transition-all duration-200"
@@ -400,18 +389,16 @@ const CourseForm = ({ instructors }) => {
                     </div>
                   </div>
 
-                  {/* REMOVE BUTTON */}
+                  {/* REMOVE LESSON */}
                   {fields.length > 1 && (
                     <div className="flex justify-end">
                       <button
                         type="button"
                         onClick={() => remove(index)}
-                        className="flex items-center gap-2 px-4 py-2 text-sm 
-                                 text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300
+                        className="flex items-center gap-2 px-4 py-2 text-sm text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300
                                  hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                       >
-                        <LuTrash2 className="w-4 h-4" />
-                        Remove Lesson
+                        <LuTrash2 className="w-4 h-4" /> Remove Lesson
                       </button>
                     </div>
                   )}
@@ -419,50 +406,33 @@ const CourseForm = ({ instructors }) => {
               ))}
             </div>
 
-            {/* ADD NEW LESSON BUTTON */}
+            {/* ADD NEW LESSON */}
             <button
               type="button"
               onClick={() => append({ title: "", videoUrl: "" })}
-              className="mt-6 w-full flex items-center justify-center gap-2 px-6 py-3 
-                       border-2 border-dashed border-gray-300 dark:border-gray-600 
-                       rounded-xl hover:border-[#4a02d5] hover:bg-[#4a02d5]/5
-                       dark:hover:border-[#71f9a3] dark:hover:bg-[#71f9a3]/5
-                       text-gray-600 dark:text-gray-400 hover:text-[#4a02d5] 
-                       dark:hover:text-[#71f9a3] transition-all duration-200"
+              className="mt-6 w-full flex items-center justify-center gap-2 px-6 py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 
+                       rounded-xl hover:border-[#4a02d5] hover:bg-[#4a02d5]/5 dark:hover:border-[#71f9a3] dark:hover:bg-[#71f9a3]/5
+                       text-gray-600 dark:text-gray-400 hover:text-[#4a02d5] dark:hover:text-[#71f9a3] transition-all duration-200"
             >
-              <LuPlus className="w-5 h-5" />
-              Add New Lesson
+              <LuPlus className="w-5 h-5" /> Add New Lesson
             </button>
           </div>
 
-          {/* Submit Button */}
+          {/* Submit & Cancel */}
           <div className="flex justify-end gap-4 pt-6">
-            <button
-              type="button"
-              className="px-8 py-3 rounded-xl border border-gray-300 dark:border-gray-600 
-                       text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700
-                       hover:border-[#4a02d5] dark:hover:border-[#71f9a3]
-                       transition-all duration-200 font-medium"
-            >
+            <Button variant="outline" onClick={onClose}>
               Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-8 py-3 rounded-xl bg-gradient-to-r from-[#4a02d5] to-[#71f9a3]
-                       text-white font-semibold hover:opacity-90 
-                       transform hover:-translate-y-0.5 transition-all duration-200 
-                       shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#4a02d5] focus:ring-offset-2 cursor-pointer cursor-pointer"
-            >
+            </Button>
+            <Button type="submit" className="bg-gradient-to-r from-[#4a02d5] to-[#71f9a3] text-white">
               <div className="flex items-center justify-center gap-2">
-                <LuCheck className="w-5 h-5" />
-                Create Course
+                <LuCheck className="w-5 h-5" /> Update Course
               </div>
-            </button>
+            </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default CourseForm;
+export default UpdateModal;

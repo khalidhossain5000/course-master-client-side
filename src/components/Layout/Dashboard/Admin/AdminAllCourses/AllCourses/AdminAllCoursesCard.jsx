@@ -5,12 +5,13 @@ import React, { useState } from "react";
 import AllCoursesCard from "../AllCoursesCard";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Swal from "sweetalert2";
+import UpdateModal from "../../UpdateCourseModal/UpdateModal";
 
 const AdminAllCourses = () => {
   const axiosSecure = useAxiosSecure();
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
-
+const [selectedCourse, setSelectedCourse] = useState(null);
   const { data, isLoading, isError,refetch } = useQuery({
     queryKey: ["all-courses", page, limit],
     queryFn: async () => {
@@ -45,13 +46,24 @@ const AdminAllCourses = () => {
     );
   }
 
+  const categories = [
+    "Web Development",
+    "Mobile Development",
+    "Data Science",
+    "Machine Learning",
+    "UI/UX Design",
+    "Digital Marketing",
+  ];
   const courses = data.data;
   const totalPages = data.pagination.totalPages;
   const currentPage = data.pagination.page;
   const totalCourses = data.pagination.total || 0;
 
-  // Dummy handlers for edit/delete
-  const handleEdit = (course) => console.log("Edit course:", course);
+  const handleEdit = (course) => {
+    setSelectedCourse(course);
+  };
+    const closeModal = () => setSelectedCourse(null);
+
 const handleDelete = async (id) => {
   try {
     // Confirmation using SweetAlert2
@@ -191,7 +203,7 @@ const handleDelete = async (id) => {
                       className={`w-10 h-10 flex items-center justify-center rounded-lg font-medium transition-all duration-200 ${
                         currentPage === pageNum
                           ? "bg-gradient-to-r from-[#4a02d5] to-[#71f9a3] text-white shadow-lg"
-                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                       }`}
                     >
                       {pageNum}
@@ -207,7 +219,7 @@ const handleDelete = async (id) => {
                          text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700
                          hover:border-[#4a02d5] dark:hover:border-[#71f9a3]
                          disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-transparent
-                         transition-all duration-200 font-medium"
+                         transition-all duration-200 font-medium cursor-pointer"
               >
                 Next
                 <ChevronRight size={18} />
@@ -216,6 +228,8 @@ const handleDelete = async (id) => {
           </div>
         </div>
       </div>
+      {/* update modal */}
+          {selectedCourse && <UpdateModal course={selectedCourse} onClose={closeModal} categories={categories}/>}
     </div>
   );
 };

@@ -22,7 +22,7 @@ const ProfileLayout = () => {
       <div>
         <Image
           className="rounded-full border-2 border-indigo-800 w-36 h-36 p-1 mx-auto"
-          src={user?.profileImage}
+          src={user?.profileImage || ''}
           alt="user profile image "
           width={40}
           height={5}

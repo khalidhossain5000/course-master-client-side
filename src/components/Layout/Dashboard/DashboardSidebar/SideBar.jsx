@@ -15,7 +15,7 @@ const SideBar = () => {
   let sidebarRoutes = [];
   //   const role = user?.role;
 
-  const role = "admin"; // just for testing
+  const role = "student"; // just for testing
   if (role === "admin") {
     sidebarRoutes = [
       {

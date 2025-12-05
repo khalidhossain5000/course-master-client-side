@@ -8,7 +8,7 @@ import ModeToggle from "../../ModeToggle/ModeToggle";
 
 const NavAuthItems = () => {
   const { user,logout } = useAuth();
-  console.log(user, "user in the nav item here");
+  // console.log(user, "user in the nav item here");
   return (
     <div className="flex items-center gap-6">
       <ModeToggle/>
