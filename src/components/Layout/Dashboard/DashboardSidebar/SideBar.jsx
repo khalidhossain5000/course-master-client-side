@@ -15,7 +15,7 @@ const SideBar = () => {
   let sidebarRoutes = [];
   //   const role = user?.role;
 
-  const role = "student"; // just for testing
+  const role = "admin"; // just for testing
   if (role === "admin") {
     sidebarRoutes = [
       {
@@ -52,17 +52,6 @@ const SideBar = () => {
         name: "Manage Users",
         path: "/dashboard/admin/manage-users",
         icon: <BookOpen className="w-5 h-5" />,
-      },
-      
-      {
-        name: "Free Enrolled Course",
-        path: "/dashboard/admin/free-enrolled",
-        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
-      },
-      {
-        name: "Premium Enrolled Course",
-        path: "/dashboard/admin/premium-enroll-info",
-        icon: <MdOutlineDonutSmall className="w-5 h-5" />,
       },
     ];
   }

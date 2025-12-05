@@ -12,6 +12,7 @@ import {
   Calendar,
   Tag
 } from 'lucide-react';
+import Link from 'next/link';
 
 const AllCourseCard = ({ course }) => {
     const {
@@ -162,10 +163,11 @@ const AllCourseCard = ({ course }) => {
                 {/* Buttons Section */}
                 <div className="flex space-x-3">
                     {/* View Course Button - Always Visible */}
-                    <button className="flex-1 bg-transparent border-2 border-[#4a02d5] dark:border-[#71f9a3] text-[#4a02d5] dark:text-[#71f9a3] py-3 rounded-lg font-semibold hover:bg-[#4a02d5] dark:hover:bg-[#71f9a3] hover:text-[#fcfff2] dark:hover:text-[#192335] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow hover:shadow-lg cursor-pointer flex items-center justify-center gap-2">
+                    <Link href={`/all-courses/${course?._id}`} className='flex-1 w-full'>
+                    <button className="flex-1 bg-transparent border-2 border-[#4a02d5] dark:border-[#71f9a3] text-[#4a02d5] dark:text-[#71f9a3] py-3 rounded-lg font-semibold hover:bg-[#4a02d5] dark:hover:bg-[#71f9a3] hover:text-[#fcfff2] dark:hover:text-[#192335] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] shadow hover:shadow-lg  flex items-center justify-center gap-2 cursor-pointer w-full">
                         <Eye size={18} />
                         View Course
-                    </button>
+                    </button></Link>
                     
                     {/* Enroll Now Button - Only for Premium */}
                     {!isFree && (

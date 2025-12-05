@@ -58,6 +58,9 @@ const CourseForm = ({ instructors }) => {
   ];
 
   const onSubmit = (data) => {
+      if (data.isFree) {
+    data.price = 0;
+  }
     console.log("FORM SUBMITTED:", data);
     axiosSecure.post('/api/courses/create',data)
     .then((res)=>{

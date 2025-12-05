@@ -39,14 +39,15 @@ const AuthProvider = ({ children }) => {
     console.log("Logout error:", error);
   }
 };
-
+const userRole=user?.role
   const AuthInfo = {
     user,
     setUser,
     token,
     setToken,
     loading ,
-    logout
+    logout,
+    userRole
   };
   console.log(token,user,'user token user');
   return (

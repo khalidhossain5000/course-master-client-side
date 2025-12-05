@@ -318,9 +318,9 @@ const AllCoursesPublic = () => {
 
           {/* Main Content Area */}
           <div className="lg:w-3/4">
-            {/* Results Summary */}
+            {/* Results Summary with Top Pagination */}
             <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 md:p-6 mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                 <div>
                   <h3 className="text-xl font-bold text-[#192335] dark:text-[#fcfff2] mb-1">
                     Available Courses
@@ -330,13 +330,77 @@ const AllCoursesPublic = () => {
                     {hasActiveFilters && ' matching your criteria'}
                   </p>
                 </div>
-                <div className="flex items-center gap-4">
+                
+                {/* Top Pagination */}
+                {totalPages > 1 && (
                   <div className="flex items-center gap-2">
-                    <Sparkles className="text-[#4a02d5] dark:text-[#71f9a3]" size={20} />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">
-                      Page {currentPage} of {totalPages}
-                    </span>
+                    <div className="hidden sm:flex items-center gap-2">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        Page {currentPage} of {totalPages}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 rounded-xl p-1">
+                      <button
+                        onClick={() => setPage((old) => Math.max(old - 1, 1))}
+                        disabled={page === 1}
+                        className="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                      >
+                        <ChevronLeft size={18} className="text-gray-700 dark:text-gray-300" />
+                      </button>
+                      
+                      <div className="flex items-center gap-1 px-2">
+                        <span className="text-sm font-medium text-[#4a02d5] dark:text-[#71f9a3]">
+                          {currentPage}
+                        </span>
+                        <span className="text-gray-400">/</span>
+                        <span className="text-sm text-gray-600 dark:text-gray-400">
+                          {totalPages}
+                        </span>
+                      </div>
+                      
+                      <button
+                        onClick={() => setPage((old) => Math.min(old + 1, totalPages))}
+                        disabled={page === totalPages}
+                        className="p-2 rounded-lg hover:bg-white dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                      >
+                        <ChevronRight size={18} className="text-gray-700 dark:text-gray-300" />
+                      </button>
+                    </div>
                   </div>
+                )}
+              </div>
+              
+              {/* Items Per Page Selector */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-2">
+                  <Sparkles className="text-[#4a02d5] dark:text-[#71f9a3]" size={18} />
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
+                    Showing {(currentPage - 1) * limit + 1} to {Math.min(currentPage * limit, totalCourses)} of {totalCourses} courses
+                  </span>
+                </div>
+                
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
+                    Courses per page:
+                  </span>
+                  <select
+                    value={limit}
+                    onChange={(e) => {
+                      setLimit(Number(e.target.value));
+                      setPage(1);
+                    }}
+                    className="px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 
+                             bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 
+                             focus:outline-none focus:ring-2 focus:ring-[#4a02d5] focus:border-transparent
+                             transition-all duration-200 cursor-pointer"
+                  >
+                    {[5, 10, 15, 20, 25].map((num) => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
@@ -376,52 +440,25 @@ const AllCoursesPublic = () => {
               </div>
             )}
 
-            {/* Pagination */}
+            {/* Bottom Pagination */}
             {courses.length > 0 && totalPages > 1 && (
               <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 md:p-6">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                  {/* Left Section - Page Info and Items Per Page */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                    {/* Items Per Page */}
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm text-gray-600 dark:text-gray-400 whitespace-nowrap">
-                        Show per page:
-                      </label>
-                      <select
-                        value={limit}
-                        onChange={(e) => {
-                          setLimit(Number(e.target.value));
-                          setPage(1); // Reset to first page
-                        }}
-                        className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 
-                                 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 
-                                 focus:outline-none focus:ring-2 focus:ring-[#4a02d5] focus:border-transparent
-                                 transition-all duration-200"
-                      >
-                        {[5, 10, 20, 50].map((num) => (
-                          <option key={num} value={num}>
-                            {num}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    {/* Page Info */}
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
-                      Showing{" "}
-                      <span className="font-semibold text-[#192335] dark:text-[#fcfff2]">
-                        {(currentPage - 1) * limit + 1}
-                      </span>{" "}
-                      to{" "}
-                      <span className="font-semibold text-[#192335] dark:text-[#fcfff2]">
-                        {Math.min(currentPage * limit, totalCourses)}
-                      </span>{" "}
-                      of{" "}
-                      <span className="font-semibold text-[#192335] dark:text-[#fcfff2]">
-                        {totalCourses}
-                      </span>{" "}
-                      courses
-                    </div>
+                  {/* Page Info */}
+                  <div className="text-sm text-gray-600 dark:text-gray-400">
+                    Showing{" "}
+                    <span className="font-semibold text-[#192335] dark:text-[#fcfff2]">
+                      {(currentPage - 1) * limit + 1}
+                    </span>{" "}
+                    to{" "}
+                    <span className="font-semibold text-[#192335] dark:text-[#fcfff2]">
+                      {Math.min(currentPage * limit, totalCourses)}
+                    </span>{" "}
+                    of{" "}
+                    <span className="font-semibold text-[#192335] dark:text-[#fcfff2]">
+                      {totalCourses}
+                    </span>{" "}
+                    courses
                   </div>
 
                   {/* Pagination Buttons */}
